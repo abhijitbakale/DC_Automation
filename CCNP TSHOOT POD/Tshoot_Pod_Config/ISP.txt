@@ -1,0 +1,110 @@
+ISP#sh runn
+ISP#sh running-config
+Building configuration...
+
+Current configuration : 999 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ISP
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+!
+resource policy
+!
+!
+!
+ip cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 209.65.200.241 255.255.255.248
+!
+interface Ethernet0/0
+ no ip address
+ shutdown
+ half-duplex
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+ half-duplex
+!
+interface Serial1/0
+ no ip address
+ shutdown
+ no fair-queue
+!
+interface Serial1/1
+ no shutdown
+ ip address 209.65.200.226 255.255.255.252
+ clock rate 128000
+!
+interface Serial1/2
+ no ip address
+ shutdown
+!
+interface Serial1/3
+ no ip address
+ shutdown
+!
+router bgp 65002
+ no synchronization
+ bgp log-neighbor-changes
+ network 209.65.200.240 mask 255.255.255.248
+ neighbor 209.65.200.225 remote-as 65001
+ no auto-summary
+!
+ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+!
+!
+end

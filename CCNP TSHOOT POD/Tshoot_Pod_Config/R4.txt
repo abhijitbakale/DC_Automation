@@ -1,0 +1,148 @@
+
+!
+version 12.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+memory-size iomem 15
+no network-clock-participate slot 1 
+no network-clock-participate wic 0 
+no aaa new-model
+ip subnet-zero
+!
+!
+ip dhcp excluded-address 10.2.1.1 10.2.1.3
+!
+ip dhcp pool vlan10
+   network 10.2.1.0 255.255.255.0
+   default-router 10.2.1.254 
+!
+!
+ip cef
+ip ips po max-events 100
+ipv6 unicast-routing
+no ftp-server write-enable
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+interface Tunnel0
+ no ip address
+ ipv6 address 2026::34:2/122
+ ipv6 ospf 6 area 34
+ tunnel source 10.1.1.10
+ tunnel destination 10.1.1.9
+ no shutdown
+!
+interface FastEthernet0/0
+ ip address 10.1.4.5 255.255.255.252
+ duplex auto
+ speed auto
+ ipv6 address 2026::2:1/122
+ ipv6 rip RIP_ZONE enable
+ no shutdown
+!
+interface FastEthernet0/1
+ ip address 10.1.4.9 255.255.255.252
+ duplex auto
+ speed auto
+ no shutdown
+!
+interface Serial1/0
+ no ip address
+ encapsulation frame-relay
+ no fair-queue
+ no shutdown
+!
+interface Serial1/0.34 point-to-point
+ ip address 10.1.1.10 255.255.255.252
+ frame-relay interface-dlci 403   
+!
+interface Serial1/1
+ no ip address
+ shutdown
+!
+interface Serial1/2
+ no ip address
+ shutdown
+!
+interface Serial1/3
+ no ip address
+ shutdown
+!
+router eigrp 10
+ redistribute ospf 1
+ network 10.1.4.4 0.0.0.3
+ network 10.1.4.8 0.0.0.3
+ default-metric 1544 2000 255 1 1500
+ no auto-summary
+!
+router ospf 1
+ log-adjacency-changes
+ area 34 nssa no-summary
+ redistribute eigrp 10 subnets
+ network 10.1.1.8 0.0.0.3 area 34
+!
+ip classless
+!
+ip http server
+no ip http secure-server
+!
+!
+ipv6 router ospf 6
+ router-id 4.4.4.4
+ log-adjacency-changes
+ redistribute connected
+ redistribute rip RIP_ZONE
+!
+ipv6 router rip RIP_ZONE
+ redistribute connected
+ redistribute ospf 6 metric 2
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ privilege level 15
+ no login
+line vty 5 15
+ privilege level 15
+ no login
+!
+!
+end

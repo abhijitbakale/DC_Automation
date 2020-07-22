@@ -1,0 +1,191 @@
+
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname DSW1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+!
+no aaa new-model
+system mtu routing 1500
+ip routing
+!
+!
+ipv6 unicast-routing
+!
+!
+crypto pki trustpoint TP-self-signed-428536832
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-428536832
+ revocation-check none
+ rsakeypair TP-self-signed-428536832
+!
+!
+crypto pki certificate chain TP-self-signed-428536832
+ certificate self-signed 01 nvram:IOS-Self-Sig#3232.cer
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10,200
+!
+interface Port-channel4
+ switchport trunk allowed vlan 20,200
+!
+interface Port-channel12
+ no switchport
+ ip address 10.2.4.13 255.255.255.252
+ ipv6 address 2026::3:1/122
+ ipv6 rip RIP_ZONE enable
+!
+interface FastEthernet0/1
+ no shutdown
+ no switchport
+ ip address 10.1.4.6 255.255.255.252
+ ipv6 address 2026::2:2/122
+ ipv6 rip RIP_ZONE enable
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+ no shutdown
+ switchport trunk allowed vlan 10,200
+ channel-protocol lacp
+ channel-group 1 mode active
+!
+interface FastEthernet0/20
+ no shutdown
+ switchport trunk allowed vlan 10,200
+ channel-protocol lacp
+ channel-group 1 mode active
+!
+interface FastEthernet0/21
+ no shutdown
+ switchport trunk allowed vlan 20,200
+ channel-protocol lacp
+ channel-group 4 mode active
+!
+interface FastEthernet0/22
+ no shutdown
+ switchport trunk allowed vlan 20,200
+ channel-protocol lacp
+ channel-group 4 mode active
+!
+interface FastEthernet0/23
+ no shutdown
+ no switchport
+ no ip address
+ channel-protocol lacp
+ channel-group 12 mode passive
+!
+interface FastEthernet0/24
+ no shutdown
+ no switchport
+ no ip address
+ channel-protocol lacp
+ channel-group 12 mode passive
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no shutdown
+ no ip address
+!
+interface Vlan10
+ no shutdown
+ ip address 10.2.1.1 255.255.255.0
+ ip helper-address 10.1.4.5
+ standby 10 ip 10.2.1.254
+ standby 10 priority 120
+ standby 10 preempt
+!
+interface Vlan20
+ n shutdown
+ ip address 10.2.2.2 255.255.255.0
+!
+interface Vlan200
+ no shutdown
+ ip address 192.168.1.129 255.255.255.224
+!
+!
+router eigrp 10
+ network 10.1.4.4 0.0.0.3
+ network 10.2.1.0 0.0.0.255
+ network 10.2.2.0 0.0.0.255
+ network 10.2.4.12 0.0.0.3
+ network 192.168.1.128 0.0.0.31
+ passive-interface Vlan10
+ passive-interface Vlan20
+ passive-interface Vlan200
+!
+ip classless
+ip http server
+ip http secure-server
+!
+!
+ip sla enable reaction-alerts
+ipv6 router rip RIP_ZONE
+!
+!
+!
+!
+!
+line con 0
+line vty 0 4
+ privilege level 15
+ no login
+line vty 5 15
+ privilege level 15
+ no login
+!
+end

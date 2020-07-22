@@ -1,0 +1,122 @@
+
+!
+version 12.1
+no service pad
+service timestamps debug uptime
+service timestamps log uptime
+no service password-encryption
+!
+hostname ASW1
+!
+!
+ip subnet-zero
+!
+ip ssh time-out 120
+ip ssh authentication-retries 3
+!
+spanning-tree mode pvst
+no spanning-tree optimize bpdu transmission
+spanning-tree extend system-id
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10,200
+ flowcontrol send off
+!
+interface Port-channel3
+ switchport trunk allowed vlan 10,200
+ flowcontrol send off
+!
+interface FastEthernet0/1
+ no shutdown
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/2
+ no shutdown
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+ no shutdown
+ switchport trunk allowed vlan 10,200
+ channel-group 1 mode passive
+!
+interface FastEthernet0/20
+ no shutdown
+ switchport trunk allowed vlan 10,200
+ channel-group 1 mode passive
+!
+interface FastEthernet0/21
+ no shutdown
+ switchport trunk allowed vlan 10,200
+ channel-group 3 mode passive
+!
+interface FastEthernet0/22
+ no shutdown
+ switchport trunk allowed vlan 10,200
+ channel-group 3 mode passive
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface Vlan1
+ no shutdown
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan200
+ no shutdown
+ ip address 192.168.1.131 255.255.255.224
+ no ip route-cache
+!
+ip http server
+!
+line con 0
+line vty 0 4
+ privilege level 15
+ no login
+line vty 5 15
+ privilege level 15
+ no login
+!
+!
+end
